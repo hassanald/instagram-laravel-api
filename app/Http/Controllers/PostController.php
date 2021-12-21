@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -29,7 +30,7 @@ class PostController extends Controller
         $imageName = time().'_'. Str::slug($request->slug) .'.'. $request->image->extension();
         $data['title'] = $request->title;
         $data['slug'] =  Str::slug($request->slug);
-        $data['image'] = 'images/posts/'.$imageName.'';
+        $data['image'] = 'images/posts/'.$imageName;
         $data['caption'] = $request->caption;
         $data['user_id'] = auth()->user()->id;
         $post = Post::create($data);
@@ -53,10 +54,29 @@ class PostController extends Controller
             $validateData = $request->validate([
                 'title' => 'required|string|max:50',
                 'slug' => ['required' , Rule::unique('posts', 'slug')->ignore($post->id)],
-                'image' => 'required|file',
+                'image' => 'file',
                 'caption' => 'required|string|max:500',
             ]);
+            if ($request->has('image')){
 
+                $post->title = $request->title;
+                $post->slug = Str::slug($request->slug);
+                $post->caption = $request->caption;
+                $postImage = $post->image;
+                unlink($postImage);
+                $imageName = time().'_'.$post->slug.'.'.$request->image->extension();
+                $post->image = 'images/posts/'.$imageName;
+                $post->save();
+                $request->image->move(public_path('images/posts') , $imageName);
+            }else {
+
+                $post->title = $request->title;
+                $post->slug = Str::slug($request->slug);
+                $post->caption = $request->caption;
+                $post->save();
+            }
+
+            return response()->json(['message' => 'Post with id = '.$id.' has been updated' , 'data' => $post]);
 
         }
     }
@@ -70,10 +90,16 @@ class PostController extends Controller
             return response()->json('There is no post with id = '.$id);
         }else {
             $postImage = $post->image;
-            unlink($postImage);
-            $post->delete();
+            if($postImage) {
 
-            return response()->json('Post has been deleted', 200);
+                unlink($postImage);
+                $post->delete();
+
+            }elseif (!$postImage){
+
+                $post->delete();
+            }
+            return response()->json('Post with id = '.$id.' has been deleted', 200);
         }
     }
 }

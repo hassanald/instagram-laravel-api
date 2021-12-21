@@ -22,6 +22,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/post/store' , [\App\Http\Controllers\PostController::class , 'store']);
     Route::post('/post/{id}/update' , [\App\Http\Controllers\PostController::class , 'update']);
     Route::delete('/post/{id}/delete' , [\App\Http\Controllers\PostController::class , 'destroy']);
+    //User
+    Route::get('/user/{name}' , [\App\Http\Controllers\UserController::class , 'searchWithName']);
+    Route::get('/user/{name}/posts' , [\App\Http\Controllers\UserController::class , 'usersPost']);
+
+
 
 });
 
