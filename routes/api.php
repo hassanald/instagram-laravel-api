@@ -29,7 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/unfollow/{id}' , [\App\Http\Controllers\UserController::class , 'UnfollowMethod']);
     Route::get('/user/{id}/followings' , [\App\Http\Controllers\UserController::class , 'userFollowings']);
     Route::get('/user/{id}/followers' , [\App\Http\Controllers\UserController::class , 'userFollowers']);
-
+    //Like
+    Route::post('post/{id}/like' , [\App\Http\Controllers\LikeController::class , 'likePost']);
 
 
 
