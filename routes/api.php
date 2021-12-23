@@ -25,6 +25,11 @@ Route::middleware('auth:sanctum')->group(function () {
     //User
     Route::get('/user/{name}' , [\App\Http\Controllers\UserController::class , 'searchWithName']);
     Route::get('/user/{name}/posts' , [\App\Http\Controllers\UserController::class , 'usersPost']);
+    Route::post('/follow/{id}' , [\App\Http\Controllers\UserController::class , 'followMethod']);
+    Route::post('/unfollow/{id}' , [\App\Http\Controllers\UserController::class , 'UnfollowMethod']);
+    Route::get('/user/{id}/followings' , [\App\Http\Controllers\UserController::class , 'userFollowings']);
+    Route::get('/user/{id}/followers' , [\App\Http\Controllers\UserController::class , 'userFollowers']);
+
 
 
 
