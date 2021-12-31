@@ -25,5 +25,7 @@ class DatabaseSeeder extends Seeder
 //
 //        $userB->followings()->attach(User::factory(5)->create()->pluck('id'));
 //        $userB->followers()->attach(User::factory(5)->create()->pluck('id'));
+
+//        \App\Models\Like::factory(50)->create();
     }
 }

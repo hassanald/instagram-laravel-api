@@ -15,4 +15,14 @@ class Comment extends Model
 
         return $this->morphMany(like::class , 'likeable');
     }
+
+    public function post(){
+
+        return $this->belongsTo(Post::class);
+    }
+
+    public function user(){
+
+        return $this->belongsTo(User::class);
+    }
 }

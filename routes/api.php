@@ -30,7 +30,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/{id}/followings' , [\App\Http\Controllers\UserController::class , 'userFollowings']);
     Route::get('/user/{id}/followers' , [\App\Http\Controllers\UserController::class , 'userFollowers']);
     //Like
-    Route::post('post/{id}/like' , [\App\Http\Controllers\LikeController::class , 'likePost']);
+    Route::post('/post/{id}/like' , [\App\Http\Controllers\LikeController::class , 'likePost']);
+    Route::delete('/post/{id}/unlike' , [\App\Http\Controllers\LikeController::class , 'unLikePost']);
+    Route::get('/mostlike' , [\App\Http\Controllers\LikeController::class , 'mostPostLiked']);
+    //Comment
+    Route::post('/post/{id}/comment' , [\App\Http\Controllers\CommentController::class , 'store']);
+    Route::get('/post/{id}/comments' , [\App\Http\Controllers\CommentController::class , 'show']);
+    Route::delete('/comment/{id}' , [\App\Http\Controllers\CommentController::class , 'destroy']);
 
 
 

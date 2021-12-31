@@ -15,4 +15,9 @@ class like extends Model
 
         return $this->morphTo();
     }
+
+    public function post(){
+
+        return $this->morphedByMany(Post::class , 'likeable');
+    }
 }
