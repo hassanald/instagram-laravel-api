@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\like;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -55,6 +56,57 @@ class LikeController extends Controller
                 return response()->json(['message' => 'You didnt like this post']);
             }
         }
+    }
+
+    public function likeComment($id){
+
+        $comment = Comment::find($id);
+        $authUser = Auth::user();
+        if (!$comment){
+
+            return response()->json(['message' => 'There is no Comment with id: '.$id]);
+        } else {
+            if (DB::table('likes')->where('user_id' , '=' , $authUser->id)
+                ->where('likeable_type' , '=' , 'App\Models\Comment')
+                ->where('likeable_id' , '=' , $id)->exists()
+            ){
+
+                return response()->json(['message' => 'The Comment was liked before']);
+            } else {
+
+                $like = $comment->likes()->create([
+                    'user_id' => $authUser->id
+                ]);
+
+                return response()->json($like);
+            }
+        }
+
+    }
+
+    public function unLikeComment($id){
+
+        $comment = Comment::find($id);
+        $authUser = Auth::user();
+        if (!$comment){
+
+            return response()->json(['message' => 'There is no Comment with id: '.$id]);
+        } else {
+            if (DB::table('likes')->where('user_id' , '=' , $authUser->id)
+                ->where('likeable_type' , '=' , 'App\Models\Comment')
+                ->where('likeable_id' , '=' , $id)->exists()
+            ){
+                $like = $comment->likes()->where('user_id' , '=' , $authUser->id)->first();
+                $comment->likes()->delete();
+
+                return response()->json(['message' => 'Unliked' , 'data' => $like]);
+
+            } else {
+
+                return response()->json(['message' => 'You didnt like this comment before']);
+            }
+        }
+
     }
 
     public function mostPostLiked(){

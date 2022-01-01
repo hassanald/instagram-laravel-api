@@ -33,6 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/post/{id}/like' , [\App\Http\Controllers\LikeController::class , 'likePost']);
     Route::delete('/post/{id}/unlike' , [\App\Http\Controllers\LikeController::class , 'unLikePost']);
     Route::get('/mostlike' , [\App\Http\Controllers\LikeController::class , 'mostPostLiked']);
+    Route::post('/comment/{id}/like' , [\App\Http\Controllers\LikeController::class , 'likeComment']);
+    Route::delete('/comment/{id}/unlike' , [\App\Http\Controllers\LikeController::class , 'unLikeComment']);
     //Comment
     Route::post('/post/{id}/comment' , [\App\Http\Controllers\CommentController::class , 'store']);
     Route::get('/post/{id}/comments' , [\App\Http\Controllers\CommentController::class , 'show']);
